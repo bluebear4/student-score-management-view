@@ -1,12 +1,14 @@
-import request from '@/api/request'
+import request, {requestFailed} from '@/api/request'
+import Cookie from "js-cookie";
+import {NoAuth} from "@/api/student";
 
 const userApi = {
     Register: 'user/register',
-    Login: '/user/login',
-    Logout: '/user/logout',
+    Login: 'user/login',
+
 }
 
-export function register (parameter) {
+function register(parameter) {
     return request({
         url: userApi.Register,
         method: 'post',
@@ -14,7 +16,20 @@ export function register (parameter) {
     })
 }
 
-export function login (parameter) {
+export function Register(parameter, resolve, reject = requestFailed) {
+    return new Promise(() => {
+        register(parameter).then(response => {
+            resolve(response)
+            if (response.data.Code === 10004 || response.data.Code === 10005) {
+                NoAuth();
+            }
+        }).catch(error => {
+            reject(error)
+        })
+    })
+}
+
+function login(parameter) {
     return request({
         url: userApi.Login,
         method: 'post',
@@ -22,11 +37,15 @@ export function login (parameter) {
     })
 }
 
-
-export function logout () {
-    return request({
-        url: userApi.Logout,
-        method: 'post',
+export function Login(parameter, resolve, reject = requestFailed) {
+    return new Promise(() => {
+        login(parameter).then(response => {
+            resolve(response)
+            if (response.data.Code === 10004 || response.data.Code === 10005) {
+                NoAuth();
+            }
+        }).catch(error => {
+            reject(error)
+        })
     })
 }
-

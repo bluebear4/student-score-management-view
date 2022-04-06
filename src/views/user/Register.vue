@@ -47,7 +47,7 @@
             htmlType="submit"
             class="register-button"
             @click.stop.prevent="handleSubmit"
-            >注册
+        >注册
         </a-button>
         <router-link class="login" :to="{ name: 'login' }">使用已有账户登录</router-link>
       </a-form-item>
@@ -57,7 +57,8 @@
 
 <script>
 import md5 from 'md5'
-import {register} from '@/api/user'
+import {Register} from '@/api/user'
+import Cookie from "js-cookie";
 
 export default {
   name: 'Register',
@@ -69,28 +70,19 @@ export default {
     }
   },
   methods: {
-    Register(userInfo) {
-      return new Promise((resolve, reject) => {
-        register(userInfo).then(response => {
-          resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
-      })
-    },
     handlePasswordCheck(rule, value, callback) {
       const password = this.form.getFieldValue('pass_word')
       if (value === undefined) {
-        callback(new Error(this.$t('user.password.required')))
+        callback(new Error('请输入密码！'))
       }
       if (value && password && value.trim() !== password.trim()) {
-        callback(new Error(this.$t('user.password.twice.msg')))
+        callback(new Error('请确认两次密码是相同的！'))
       }
       callback()
     },
 
     handleSubmit() {
-      const {form: {validateFields}, Register} = this
+      const {form: {validateFields}} = this
       validateFields({force: true}, (err, values) => {
         if (!err) {
           const registerParams = {...values}
@@ -98,22 +90,20 @@ export default {
           registerParams.pass_word = md5(registerParams.pass_word)
           registerParams.role_id = this.role_id
           console.log('register form', registerParams)
-          Register(registerParams)
-              .then((res) => this.register(res))
-              .catch(err => this.requestFailed(err))
+          Register(registerParams, this.registerSuccess)
         }
       })
     },
 
-    register(res) {
+    registerSuccess(res) {
       res = res.data
-      console.log(res)
       if (res.Code === 0) {
         this.$notification.success({
           message: res.Message,
           description: res.Data.UserID + '注册成功'
         })
-        this.$router.push({path: '/'})
+        Cookie.set('role', this.role_id, {expires: 1})
+        this.$router.push({name: 'login'})
       } else {
         this.$notification['error']({
           message: '错误',
@@ -121,14 +111,6 @@ export default {
           duration: 4
         })
       }
-    },
-
-    requestFailed(err) {
-      this.$notification['error']({
-        message: '错误',
-        description: ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
-        duration: 4
-      })
     },
 
     onchange(activeKey) {

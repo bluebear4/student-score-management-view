@@ -10,3 +10,10 @@ const request = axios.create({
 
 export default request
 
+export function requestFailed(vue, err) {
+    vue.$notification['error']({
+        message: '错误',
+        description: ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
+        duration: 4
+    })
+}

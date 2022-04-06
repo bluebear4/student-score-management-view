@@ -36,7 +36,7 @@ export default {
 
 <style lang="less" scoped>
 #userLayout.user-layout-wrapper {
-  height: 100%;
+  height: 100vh;
 
   .container {
     width: 100%;
@@ -48,7 +48,8 @@ export default {
 
 
     .user-layout-content {
-      padding: 32px 0 24%;
+      height: 100%;
+      padding: 32px 0;
 
       .top {
         text-align: center;
