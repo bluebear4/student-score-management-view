@@ -1,6 +1,6 @@
 <template>
   <a-layout id="components-layout-demo-custom-trigger">
-    <a-layout-sider v-model="collapsed" :trigger="null" collapsible="true">
+    <a-layout-sider v-model="collapsed" :trigger="null" :collapsible="true">
       <div class="logo" :style="logoStyle"/>
       <a-menu theme="dark" mode="inline" @select="select"
               :selected-keys="selectKeys"
@@ -114,10 +114,10 @@ export default {
     select({selectedKeys}) {
       switch (selectedKeys[0]) {
         case '1':
-          this.$router.push({name: 'info'});
+          this.$router.push({name: 'teacher-info'});
           break;
         case '2':
-          this.$router.push({name: 'getScores'});
+          this.$router.push({name: 'teacher-getScores'});
           break;
       }
     },

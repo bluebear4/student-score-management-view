@@ -6,12 +6,20 @@
               :selected-keys="selectKeys"
               class="menu">
         <a-menu-item key="1">
+          <a-icon type="user"/>
+          <span>学生信息</span>
+        </a-menu-item>
+        <a-menu-item key="2">
           <a-icon type="file-search"/>
-          <span>我的成绩</span>
+          <span>学生成绩</span>
+        </a-menu-item>
+        <a-menu-item key="3">
+          <a-icon type="edit"/>
+          <span>注册验证码</span>
         </a-menu-item>
       </a-menu>
     </a-layout-sider>
-    <a-layout>
+    <a-layout style="max-height: 800px;">
       <a-layout-header style="background: #fff; padding: 0">
         <a-icon
             class="trigger"
@@ -19,7 +27,7 @@
             @click="click"
         />
         <div class="header-right">
-          <a-tag color="green">当前身份：学生</a-tag>
+          <a-tag color="green">当前身份：管理员</a-tag>
           <a-dropdown>
             <a-button type="primary" shape="circle" @click.prevent>
               <a-icon type="user"/>
@@ -73,6 +81,23 @@
                     </template>
                   </a-modal>
                 </a-menu-item>
+                <a-menu-item>
+                  <a href="javascript:" @click="()=>showModal(3)">修改密码</a>
+                  <a-modal :visible="changePassword"
+                           title="修改验证码"
+                           @cancel="()=>handleCancel(3)"
+                  >
+                    <a-form :form="form">
+                      <a-form-item>
+
+                      </a-form-item>
+                    </a-form>
+                    <template #footer>
+                      <a-button @click="()=>handleCancel(2)">取消</a-button>
+                      <a-button type="primary" @click="()=>handleOk(2)">提交</a-button>
+                    </template>
+                  </a-modal>
+                </a-menu-item>
               </a-menu>
             </template>
           </a-dropdown>
@@ -96,11 +121,11 @@ export default {
       form: this.$form.createForm(this),
       selectKeys: ['1'],
       visible: false,
+      changePassword: false,
       collapsed: false,
       logoStyle: {
         height: '170px',
-      },
-      changePassword: false,
+      }
     };
   },
   methods: {
@@ -108,10 +133,20 @@ export default {
       this.selectKeys = val;
     },
     select({selectedKeys}) {
-      if (selectedKeys[0] === '1') {
-        this.$router.push({name: 'getMyScores'});
+      switch (selectedKeys[0]) {
+        case '1':
+          this.$router.push({name: 'admin-info'});
+          break;
+        case '2':
+          this.$router.push({name: 'admin-getScores'});
+          break;
+        case '3':
+          this.$router.push({name: 'admin-validateCode'});
+          break;
       }
     },
+
+
     showModal(val) {
       switch (val) {
         case 1:
@@ -155,13 +190,14 @@ export default {
       }
     },
 
+
     logoutSuccess(res) {
-      Cookie.remove('Auth')
-      Cookie.remove('role')
-      this.$router.push('/')
       res = res.data
       console.log(res)
       if (res.Code === 0) {
+        Cookie.remove('Auth')
+        Cookie.remove('role')
+        this.$router.push('/')
         setTimeout(() => {
           this.$notification.success({
             message: res.Message,
@@ -236,9 +272,11 @@ export default {
 }
 
 .layout-content {
+
   margin: 24px 16px;
   padding: 24px;
   background: #fff;
   min-height: 280px;
+  max-height: 800px;
 }
 </style>

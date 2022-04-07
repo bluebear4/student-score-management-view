@@ -6,6 +6,7 @@ import Student from "@/layouts/StudentDashboard";
 import Teacher from "@/layouts/TeacherDashboard";
 import Cookie from "js-cookie"
 import {NoAuth} from "@/api/student";
+import Admin from "@/layouts/AdminDashboard";
 
 //注册路由组件
 Vue.use(VueRouter);
@@ -51,17 +52,40 @@ const routes = [
         path: '/teacher',
         name: 'teacher',
         component: Teacher,
-        redirect: {name: 'info'},
+        redirect: {name: 'teacher-info'},
         children: [
             {
                 path: 'info',
-                name: 'info',
+                name: 'teacher-info',
                 component: () => import ('@/views/teacher/Info')
             },
             {
                 path: 'getScores',
-                name: 'getScores',
+                name: 'teacher-getScores',
                 component: () => import ('@/views/teacher/Score')
+            },
+        ]
+    },
+    {
+        path: '/admin',
+        name: 'admin',
+        component: Admin,
+        redirect: {name: 'admin-info'},
+        children: [
+            {
+                path: 'info',
+                name: 'admin-info',
+                component: () => import ('@/views/admin/Info')
+            },
+            {
+                path: 'getScores',
+                name: 'admin-getScores',
+                component: () => import ('@/views/admin/Score')
+            },
+            {
+                path: 'validateCode',
+                name: 'admin-validateCode',
+                component: () => import ('@/views/admin/ValidateCode')
             },
         ]
     }
@@ -85,6 +109,9 @@ router.beforeEach((to, from, next) => {
                 break;
             case '2':
                 next({name: 'teacher'});
+                break;
+            case '1':
+                next({name: 'admin'});
                 break;
             default:
                 NoAuth()
