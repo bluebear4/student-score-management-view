@@ -19,9 +19,10 @@ function logout() {
 export function Logout(resolve, vue, reject = requestFailed) {
     return new Promise(() => {
         logout().then(response => {
-            resolve(response)
             if (response.data.Code === 10004 || response.data.Code === 10005) {
                 NoAuth(vue);
+            } else {
+                resolve(response)
             }
         }).catch(error => {
             reject(vue, error)
@@ -38,12 +39,13 @@ function changePassword(params) {
     })
 }
 
-export function ChangePassword(params, vue, resolve, reject = requestFailed) {
+export function ChangePassword(params, resolve, vue, reject = requestFailed) {
     return new Promise(() => {
         changePassword(params).then(response => {
-            resolve(response)
             if (response.data.Code === 10004 || response.data.Code === 10005) {
                 NoAuth(vue);
+            } else {
+                resolve(response)
             }
         }).catch(error => {
             reject(vue, error)
@@ -61,9 +63,10 @@ function getScores() {
 export function GetScores(resolve, vue, reject = requestFailed) {
     return new Promise(() => {
         getScores().then(response => {
-            resolve(response)
             if (response.data.Code === 10004 || response.data.Code === 10005) {
                 NoAuth(vue);
+            } else {
+                resolve(response)
             }
         }).catch(error => {
             reject(vue, error)

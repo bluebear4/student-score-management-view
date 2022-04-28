@@ -16,6 +16,15 @@
         <a-menu-item key="3">
           <a-icon type="edit"/>
           <span>注册验证码</span>
+          <a-modal :visible="validateCode"
+                   title="修改验证码"
+                   @cancel="()=>handleCancel(3)"
+                   footer=""
+          >
+            <div style="margin: 0 auto;text-align: center">
+              <ValidateCode/>
+            </div>
+          </a-modal>
         </a-menu-item>
       </a-menu>
     </a-layout-sider>
@@ -82,21 +91,7 @@
                   </a-modal>
                 </a-menu-item>
                 <a-menu-item>
-                  <a href="javascript:" @click="()=>showModal(3)">修改密码</a>
-                  <a-modal :visible="changePassword"
-                           title="修改验证码"
-                           @cancel="()=>handleCancel(3)"
-                  >
-                    <a-form :form="form">
-                      <a-form-item>
-
-                      </a-form-item>
-                    </a-form>
-                    <template #footer>
-                      <a-button @click="()=>handleCancel(2)">取消</a-button>
-                      <a-button type="primary" @click="()=>handleOk(2)">提交</a-button>
-                    </template>
-                  </a-modal>
+                  <a href="javascript:" @click="()=>showModal(3)">修改验证码</a>
                 </a-menu-item>
               </a-menu>
             </template>
@@ -113,15 +108,20 @@
 import Cookie from "js-cookie";
 import {ChangePassword, Logout} from "@/api/student";
 import md5 from "md5";
+import ValidateCode from "@/components/ValidateCode";
 
 export default {
   name: 'DashBoard',
+  components: {
+    ValidateCode,
+  },
   data() {
     return {
       form: this.$form.createForm(this),
       selectKeys: ['1'],
       visible: false,
       changePassword: false,
+      validateCode: false,
       collapsed: false,
       logoStyle: {
         height: '170px',
@@ -141,7 +141,7 @@ export default {
           this.$router.push({name: 'admin-getScores'});
           break;
         case '3':
-          this.$router.push({name: 'admin-validateCode'});
+          this.showModal(3);
           break;
       }
     },
@@ -155,6 +155,9 @@ export default {
         case 2:
           this.changePassword = true;
           break;
+        case 3:
+          this.validateCode = true;
+          break;
       }
     },
     handleCancel(val) {
@@ -164,6 +167,9 @@ export default {
           break;
         case 2:
           this.changePassword = false;
+          break;
+        case 3:
+          this.validateCode = false;
           break;
       }
     },

@@ -29,9 +29,10 @@ export function addInfo(parameter) {
 export function AddInfo(parameter, resolve, vue, reject = requestFailed) {
     return new Promise(() => {
         addInfo(parameter).then(response => {
-            resolve(response)
             if (response.data.Code === 10004 || response.data.Code === 10005) {
                 NoAuth(vue);
+            } else {
+                resolve(response)
             }
         }).catch(error => {
             reject(vue, error)
@@ -56,9 +57,10 @@ export function uploadInfo(parameter) {
 export function UploadInfo(parameter, resolve, vue, reject = requestFailed) {
     return new Promise(() => {
         uploadInfo(parameter).then(response => {
-            resolve(response)
             if (response.data.Code === 10004 || response.data.Code === 10005) {
                 NoAuth(vue);
+            } else {
+                resolve(response)
             }
         }).catch(error => {
             reject(vue, error)
@@ -77,9 +79,10 @@ function getInfos() {
 export function GetInfos(resolve, vue, reject = requestFailed) {
     return new Promise(() => {
         getInfos().then(response => {
-            resolve(response)
             if (response.data.Code === 10004 || response.data.Code === 10005) {
                 NoAuth(vue);
+            } else {
+                resolve(response)
             }
         }).catch(error => {
             reject(vue, error)
@@ -98,9 +101,10 @@ export function updateInfo(parameter) {
 export function UpdateInfo(parameter, resolve, vue, reject = requestFailed) {
     return new Promise(() => {
         updateInfo(parameter).then(response => {
-            resolve(response)
             if (response.data.Code === 10004 || response.data.Code === 10005) {
                 NoAuth(vue);
+            } else {
+                resolve(response)
             }
         }).catch(error => {
             reject(vue, error)
@@ -119,9 +123,10 @@ export function deleteInfo(parameter) {
 export function DeleteInfo(parameter, resolve, vue, reject = requestFailed) {
     return new Promise(() => {
         deleteInfo(parameter).then(response => {
-            resolve(response)
             if (response.data.Code === 10004 || response.data.Code === 10005) {
                 NoAuth(vue);
+            } else {
+                resolve(response)
             }
         }).catch(error => {
             reject(vue, error)
@@ -141,9 +146,10 @@ export function addScore(parameter) {
 export function AddScore(parameter, resolve, vue, reject = requestFailed) {
     return new Promise(() => {
         addScore(parameter).then(response => {
-            resolve(response)
             if (response.data.Code === 10004 || response.data.Code === 10005) {
                 NoAuth(vue);
+            } else {
+                resolve(response)
             }
         }).catch(error => {
             reject(vue, error)
@@ -168,9 +174,10 @@ export function uploadScore(parameter) {
 export function UploadScore(parameter, resolve, vue, reject = requestFailed) {
     return new Promise(() => {
         uploadScore(parameter).then(response => {
-            resolve(response)
             if (response.data.Code === 10004 || response.data.Code === 10005) {
                 NoAuth(vue);
+            } else {
+                resolve(response)
             }
         }).catch(error => {
             reject(vue, error)
@@ -197,9 +204,10 @@ export function getScoresByClass(parameter) {
 export function GetScoresByClass(parameter, resolve, vue, reject = requestFailed) {
     return new Promise(() => {
         getScoresByClass(parameter).then(response => {
-            resolve(response)
             if (response.data.Code === 10004 || response.data.Code === 10005) {
                 NoAuth(vue);
+            } else {
+                resolve(response)
             }
         }).catch(error => {
             reject(vue, error)
@@ -217,9 +225,10 @@ function getClasses() {
 export function GetClasses(resolve, vue, reject = requestFailed) {
     return new Promise(() => {
         getClasses().then(response => {
-            resolve(response)
             if (response.data.Code === 10004 || response.data.Code === 10005) {
                 NoAuth(vue);
+            } else {
+                resolve(response)
             }
         }).catch(error => {
             reject(vue, error)
@@ -238,9 +247,10 @@ export function updateScore(parameter) {
 export function UpdateScore(parameter, resolve, vue, reject = requestFailed) {
     return new Promise(() => {
         updateScore(parameter).then(response => {
-            resolve(response)
             if (response.data.Code === 10004 || response.data.Code === 10005) {
                 NoAuth(vue);
+            } else {
+                resolve(response)
             }
         }).catch(error => {
             reject(vue, error)
@@ -259,9 +269,10 @@ export function deleteScore(parameter) {
 export function DeleteScore(parameter, resolve, vue, reject = requestFailed) {
     return new Promise(() => {
         deleteScore(parameter).then(response => {
-            resolve(response)
             if (response.data.Code === 10004 || response.data.Code === 10005) {
                 NoAuth(vue);
+            } else {
+                resolve(response)
             }
         }).catch(error => {
             reject(vue, error)

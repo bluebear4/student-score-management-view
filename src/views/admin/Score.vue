@@ -392,7 +392,7 @@ export default {
         })
 
       } else {
-        this.$notification['error']({
+        this.$notification.error({
           message: '错误',
           description: res.Message,
           duration: 4
@@ -428,15 +428,16 @@ export default {
     uploadSuccess(res) {
       res = res.data
       if (res.Code === 0) {
-        this.$notification.success({
-          message: '成功',
-          description: `上传成功 ${res.Data.SuccessCount} 条成绩,上传失败 ${res.Data.FailCount} 条成绩`
-        })
-        if (res.Data.SuccessCount > 0) {
-          setTimeout(() => location.reload(), 500);
-        }
+        this.handleSubmit()
+        setTimeout(() => {
+              this.$notification.success({
+                message: '成功',
+                description: `上传成功 ${res.Data.SuccessCount} 条成绩,上传失败 ${res.Data.FailCount} 条成绩`
+              })
+            }, 500
+        )
       } else {
-        this.$notification['error']({
+        this.$notification.error({
           message: '错误',
           description: res.Message,
           duration: 4

@@ -85,7 +85,7 @@ const routes = [
             {
                 path: 'validateCode',
                 name: 'admin-validateCode',
-                component: () => import ('@/views/admin/ValidateCode')
+                component: () => import ('@/components/ValidateCode')
             },
         ]
     }

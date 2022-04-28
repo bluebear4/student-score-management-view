@@ -21,8 +21,9 @@ export function GetValidateCode(parameter, resolve, vue, reject = requestFailed)
         getValidateCode(parameter).then(response => {
             if (response.data.Code === 10004 || response.data.Code === 10005) {
                 NoAuth(vue);
+            } else {
+                resolve(response)
             }
-            resolve(response)
         }).catch(error => {
             reject(vue, error)
         })
@@ -40,9 +41,10 @@ export function changeValidateCode(parameter) {
 export function ChangeValidateCode(parameter, resolve, vue, reject = requestFailed) {
     return new Promise(() => {
         changeValidateCode(parameter).then(response => {
-            resolve(response)
             if (response.data.Code === 10004 || response.data.Code === 10005) {
                 NoAuth(vue);
+            } else {
+                resolve(response)
             }
         }).catch(error => {
             reject(vue, error)

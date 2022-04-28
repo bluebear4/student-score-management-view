@@ -20,13 +20,6 @@ export default {
       rows: [],
       columns: [
         {
-          title: '学号',
-          dataIndex: 'user_id',
-          key: 'user_id',
-          sorter: (a, b) => parseInt(a.user_id) - parseInt(b.user_id),
-          sortDirections: ['descend', 'ascend'],
-        },
-        {
           title: '姓名',
           dataIndex: 'name',
           key: 'name',
@@ -83,12 +76,11 @@ export default {
       res = res.data
       if (res.Code === 0) {
         this.rows = res.Data.scores
-
-        this.columns[2].filters = []
+        this.columns[1].filters = []
         for (const v of res.Data.scores) {
           if (v.subject !== '') {
-            if (this.columns[2].filters.findIndex(filter => filter.text === v.subject) === -1) {
-              this.columns[2].filters.push({text: v.subject, value: v.subject})
+            if (this.columns[1].filters.findIndex(filter => filter.text === v.subject) === -1) {
+              this.columns[1].filters.push({text: v.subject, value: v.subject})
             }
           }
         }

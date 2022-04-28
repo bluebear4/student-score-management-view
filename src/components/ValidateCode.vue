@@ -1,27 +1,32 @@
 <template>
   <div style="display: inline-block">
-    <a-tabs
-        v-model="role_id"
-        @change="role_id_change"
-        :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
-    >
-      <a-tab-pane key="2" tab="教师验证码"/>
-      <a-tab-pane key="3" tab="学生验证码"/>
-    </a-tabs>
-    <a-input
-        class="teacher"
-        style="width: 80%"
-        :addonBefore="code_before"
-        size="large"
-        v-model="validate_code[role_id]"
-        :default-value="validate_code[role_id]"
-    >
-    </a-input>
-    <a-button
-        size="large"
-        @click="submit"
-    >修改
-    </a-button>
+    <a-spin :spinning="loading!==2">
+      <a-tabs
+          v-model="role_id"
+          @change="role_id_change"
+          :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
+      >
+        <a-tab-pane key="2" tab="教师验证码"/>
+        <a-tab-pane key="3" tab="学生验证码"/>
+      </a-tabs>
+      <a-input
+          class="teacher"
+          style="width: 80%"
+          :addonBefore="code_before"
+          size="large"
+          v-model="validate_code[role_id]"
+      >
+      </a-input>
+      <a-button
+          size="large"
+          @click="submit"
+      >修改
+      </a-button>
+      <a-alert
+          style="margin-top: 5px;width: 98%"
+          :message="`当前角色验证码为: ${validate_code_cache[role_id]}`" type="success"/>
+    </a-spin>
+
   </div>
 </template>
 <script>
@@ -38,16 +43,21 @@ export default {
       role_id: '2',
       code_before: '教师验证码',
       validate_code: [],
+      validate_code_cache: [],
+      loading: 0,
     };
   },
   methods: {
     getCodeSuccess(res, id) {
-      const {validate_code} = this;
       res = res.data
+      let t = this.validate_code.concat([])
       if (res.Code === 0) {
-        validate_code[id] = res.Data.ValidateCode;
+        t[id] = res.Data.ValidateCode;
+        this.validate_code = t;
+        this.validate_code_cache = JSON.parse(JSON.stringify(this.validate_code));
+        this.loading++;
       } else {
-        this.$notification['error']({
+        this.$notification.error({
           message: '错误',
           description: res.Message,
           duration: 4
@@ -67,8 +77,7 @@ export default {
     },
     submit() {
       const {role_id, validate_code, changeCodeSuccess} = this;
-      console.log(role_id, validate_code)
-      ChangeValidateCode({role_id: parseInt(role_id), validate_code: validate_code[role_id]}, this, changeCodeSuccess)
+      ChangeValidateCode({role_id: parseInt(role_id), validate_code: validate_code[role_id]}, changeCodeSuccess, this)
     },
     changeCodeSuccess(res) {
       res = res.data
@@ -77,6 +86,7 @@ export default {
           message: '成功',
           description: '修改成功',
         })
+        this.validate_code_cache = JSON.parse(JSON.stringify(this.validate_code));
       } else {
         this.$notification.error({
           message: '错误',

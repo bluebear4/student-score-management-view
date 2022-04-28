@@ -105,7 +105,7 @@ export default {
         Cookie.set('role', this.role_id, {expires: 1})
         this.$router.push({name: 'login'})
       } else {
-        this.$notification['error']({
+        this.$notification.error({
           message: '错误',
           description: res.Message,
           duration: 4

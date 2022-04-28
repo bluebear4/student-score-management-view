@@ -10,7 +10,7 @@
             </a>
           </div>
           <div class="desc">
-            林佳锐的学生成绩管理系统
+            学生成绩管理系统
           </div>
         </div>
         <router-view />

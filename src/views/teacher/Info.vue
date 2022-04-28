@@ -102,7 +102,7 @@ import {requestFailed} from "@/api/request";
 export default {
   data() {
     this.$emit('getKey', ['1']);
-    GetInfos(this.getInfosSuccess,this);
+    GetInfos(this.getInfosSuccess, this);
     return {
       form: this.$form.createForm(this),
       data: [],
@@ -296,7 +296,7 @@ export default {
         })
 
       } else {
-        this.$notification['error']({
+        this.$notification.error({
           message: '错误',
           description: res.Message,
           duration: 4
@@ -332,15 +332,18 @@ export default {
     uploadSuccess(res) {
       res = res.data
       if (res.Code === 0) {
-        this.$notification.success({
-          message: '成功',
-          description: `上传成功 ${res.Data.SuccessCount} 条信息,上传失败 ${res.Data.FailCount} 条信息`
-        })
         if (res.Data.SuccessCount > 0) {
-          setTimeout(() => location.reload(), 500);
+          GetInfos(
+              (x) => {
+                this.getInfosSuccess(x);
+                this.$notification.success({
+                  message: '成功',
+                  description: `上传成功 ${res.Data.SuccessCount} 条信息,上传失败 ${res.Data.FailCount} 条信息`
+                })
+              }, this);
         }
       } else {
-        this.$notification['error']({
+        this.$notification.error({
           message: '错误',
           description: res.Message,
           duration: 4
